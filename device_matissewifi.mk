@@ -12,13 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := device/samsung/s3ve3g
+$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+
+$(call inherit-product, device/samsung/msm8226-common/msm8226.mk)
+
+LOCAL_PATH := device/samsung/matissewifi
+
+## We are a tablet, not a phone
+PRODUCT_CHARACTERISTICS := tablet
 
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Proprietary files
-$(call inherit-product, vendor/samsung/s3ve3g/s3ve3g-vendor.mk)
+PRODUCT_LOCALES := en_US
+PRODUCT_LOCALES += xhdpi
+PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
+
+PRODUCT_COPY_FILES += \
+    bionic/libc/zoneinfo/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata
+
 
 # Audio configuration
 PRODUCT_COPY_FILES += \
@@ -36,7 +51,8 @@ PRODUCT_COPY_FILES += \
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml
+    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
+    frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -64,5 +80,5 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
 
-# Inherit from qcom-common
-$(call inherit-product, device/samsung/msm8226-common/msm8226.mk)
+#$(call inherit-product, device/samsung/msm8226-common/keylayout/keylayout.mk)
+$(call inherit-product, vendor/samsung/matissewifi/matissewifi-vendor.mk)

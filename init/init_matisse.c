@@ -36,6 +36,12 @@
 
 #include "init_msm.h"
 
+void gsm_properties()
+{
+    property_set("telephony.lteOnGsmDevice", "0");
+    property_set("ro.telephony.default_network", "0");
+}
+
 void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *board_type)
 {
     char platform[PROP_VALUE_MAX];
@@ -54,20 +60,18 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
 
     property_get("ro.bootloader", bootloader);
 
-    if (strstr(bootloader, "I9301I")) {
-        /* s3ve3g */
-        property_set("ro.build.fingerprint", "samsung/s3ve3gxx/s3ve3g:4.4.2/KOT49H/I9301IXXUANL1:user/release-keys");
-        property_set("ro.build.description", "s3ve3gxx-user 4.4.2 KOT49H I9301IXXUANL1 release-keys");
-        property_set("ro.product.model", "GT-I9301I");
-        property_set("ro.product.device", "s3ve3g");
-        property_set("ro.telephony.ril_class", "SamsungMSM8226RIL");
-        gsm_properties();
-    } else if (strstr(bootloader, "I9301Q")) {
-        /* s3ve3gjv */
-        property_set("ro.build.fingerprint", "samsung/s3ve3gjv/s3ve3g:4.4.2/KOT49H/I9301QXXUANH1:user/release-keys");
-        property_set("ro.build.description", "s3ve3gjv-user 4.4.2 KOT49H I9301QXXUANH1 release-keys");
-        property_set("ro.product.model", "GT-I9301Q");
-        property_set("ro.product.device", "s3ve3gjv");
+    if (strstr(bootloader, "T530")) {
+        /* matissewifi */
+        property_set("ro.build.fingerprint", "samsung/matissewifi/matissewifixx:4.4.2/KOT49H/T320UEU1ANAI:user/release-keys");
+        property_set("ro.build.description", "matissewifi-user 4.4.2 KOT49H T320UEU1ANAI release-keys");
+        property_set("ro.product.model", "SM-T530");
+        property_set("ro.product.device", "matissewifi");
+	} else if (strstr(bootloader, "T535")) {
+        /* matisselte */
+        property_set("ro.build.fingerprint", "samsung/matisseltexx/matisselte:4.4.2/KOT49H/G7105XXUBNI2:user/release-keys");
+        property_set("ro.build.description", "matisseltexx-user 4.4.2 KOT49H G7105XXUBNI2 release-keys");
+        property_set("ro.product.model", "SM-T535");
+        property_set("ro.product.device", "matisselte");
         property_set("ro.telephony.ril_class", "SamsungMSM8226RIL");
         gsm_properties();
     } else if (strstr(bootloader, "I9300I")) {
@@ -87,8 +91,4 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
 }
 
-void gsm_properties()
-{
-    property_set("telephony.lteOnGsmDevice", "0");
-    property_set("ro.telephony.default_network", "0");
-}
+

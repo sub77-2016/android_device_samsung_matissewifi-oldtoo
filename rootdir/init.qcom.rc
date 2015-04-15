@@ -28,6 +28,7 @@
 import init.qcom.usb.rc
 
 on early-init
+
     mount debugfs debugfs /sys/kernel/debug
 
     mkdir /firmware 0771 system system
@@ -40,6 +41,7 @@ on early-init
     symlink /data/tombstones /tombstones
 
 on init
+
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
 
@@ -88,7 +90,8 @@ on fs
     write /dev/wcnss_wlan 1
 
 on post-fs-data
-    # We will remap this as /mnt/sdcard with the sdcard fuse tool
+
+    # we will remap this as /mnt/sdcard with the sdcard fuse tool
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
 
@@ -96,7 +99,7 @@ on post-fs-data
     mkdir /data/connectivity 0771 system system
     chown system system /data/connectivity
 
-    # For WIFI TRP/TIS
+    # for WIFI TRP/TIS
     chown system root /data/.psm.info
     chmod 0664 /data/.psm.info
 
@@ -104,7 +107,7 @@ on post-fs-data
     chown system root /data/.ant.info
     chmod 0664 /data/.ant.info
 
-    # For WIFI Version
+    # for WIFI Version
     write /data/.wifiver.info 0
     chown system root /data/.wifiver.info
     chmod 0664 /data/.wifiver.info
@@ -115,7 +118,7 @@ on post-fs-data
     chmod 0664 /data/.frameburst.info
     chmod 0664 /data/.txbf.info
 
-    # For WIFI MAC address
+    # for WIFI MAC address
     mkdir /efs/wifi 0775 radio system
     chown system wifi /efs/wifi/.mac.info
     chmod 0660 /efs/wifi/.mac.info
@@ -185,7 +188,7 @@ on post-fs-data
     mkdir /data/misc/radio 0775 radio radio
     mkdir /data/misc/radio/hatp 0775 radio system
 
-    # DRM and related files in EFS
+    # drm and related files in EFS
     mkdir /efs/drm 0774 drm system
     mkdir /efs/drm/sdrm 0774 drm system
     mkdir /efs/drm/sdrm/data_agent 0774 drm system
@@ -210,7 +213,7 @@ on post-fs-data
     chown radio system /efs/prov/libdevkm.lock
     chmod 0660 /efs/prov/libdevkm.lock
 
-    # ICD
+    # icd
     exec check_icd
     chown system system /dev/icd
     chmod 0644 /dev/icd
@@ -226,25 +229,48 @@ on post-fs-data
     chown system system /sys/class/sec/led/led_blink
     chown system system /sys/class/sec/led/led_lowpower
 
-    # Symlink to bugreport storage location
+    # symlink to bugreport storage location
     symlink /data/data/com.android.shell/files/bugreports /data/bugreports
 
 on early-boot
-    # Set RLIMIT_MEMLOCK to 64MB
+    # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
 
     # Allow subsystem (modem etc) debugging
     write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
 
 on boot
+
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
-    # Permissions for bluetooth
+    # For BT MAC address
     mkdir /efs/bluetooth 0775 radio system
+
+    # Permissions for bluetooth
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
     chown bluetooth net_bt_stack ro.bt.bdaddr_path
     chown radio net_bt_stack /efs/bluetooth/bt_addr
-    chmod 0755 /efs/bluetooth/bt_addr
+    chmod 0640 /efs/bluetooth/bt_addr
+    chown bluetooth net_bt_stack /dev/ttyHS0
+    chown bluetooth bluetooth /dev/ttyHS2
+    chmod 0660 /dev/ttyHS0
+    chmod 0660 /dev/ttyHS2
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
+    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
+    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+    chown system system /sys/module/sco/parameters/disable_esco
+    chmod 0660 /sys/module/bluetooth_power/parameters/power
+    chmod 0660 /proc/bluetooth/sleep/proto
+    chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
+    chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
+    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
     restorecon_recursive /efs/bluetooth
 
     # IMEI
@@ -328,15 +354,15 @@ on boot
     chown radio system /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
     chmod 664  /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
 
-    chown radio system /sys/class/devfreq/qcom,cpubw.68/available_frequencies
+    chown radio system /sys/class/devfreq/qcom,cpubw.43/available_frequencies
     chmod 664 /sys/class/devfreq/qcom,cpubw.68/available_frequencies
-    chown radio system /sys/class/devfreq/qcom,cpubw.68/available_governors
+    chown radio system /sys/class/devfreq/qcom,cpubw.43/available_governors
     chmod 664 /sys/class/devfreq/qcom,cpubw.68/available_governors
-    chown radio system /sys/class/devfreq/qcom,cpubw.68/governor
+    chown radio system /sys/class/devfreq/qcom,cpubw.43/governor
     chmod 664 /sys/class/devfreq/qcom,cpubw.68/governor
-    chown radio system /sys/class/devfreq/qcom,cpubw.68/max_freq
+    chown radio system /sys/class/devfreq/qcom,cpubw.43/max_freq
     chmod 664 /sys/class/devfreq/qcom,cpubw.68/max_freq
-    chown radio system /sys/class/devfreq/qcom,cpubw.68/min_freq
+    chown radio system /sys/class/devfreq/qcom,cpubw.43/min_freq
     chmod 664 /sys/class/devfreq/qcom,cpubw.68/min_freq
 
     chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
@@ -394,10 +420,6 @@ on boot
     # Adjust YUV to RGB Conversion(CSC_Conversion)
     chown system media_rw /sys/class/graphics/fb0/csc_cfg
     chmod 0660 /sys/class/graphics/fb0/csc_cfg
-
-    # Display color calibration
-    chown system system /sys/devices/virtual/graphics/fb0/rgb
-    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
 
     # OTG Test
     chown system radio /sys/class/host_notify/usb_otg/booster
@@ -560,23 +582,9 @@ on boot
     chmod 0664 /sys/devices/virtual/sec/sec_touchkey/brightness
     restorecon /sys/class/sec/sec_touchkey/keypad_enable
 
-    # Define TCP buffer sizes for various networks
-    #   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
-    setprop net.tcp.buffersize.default 4096,87380,704512,4096,16384,110208
-    setprop net.tcp.buffersize.wifi    524288,1048576,4525824,524288,1048576,4525824
-    setprop net.tcp.buffersize.lte     524288,1048576,2560000,524288,1048576,2560000
-    setprop net.tcp.buffersize.umts    4094,87380,704512,4096,16384,110208
-    setprop net.tcp.buffersize.hspa    4094,87380,704512,4096,16384,262144
-    setprop net.tcp.buffersize.hsupa   4094,87380,704512,4096,16384,262144
-    setprop net.tcp.buffersize.hsdpa   4094,87380,704512,4096,16384,262144
-    setprop net.tcp.buffersize.hspap   4094,87380,1220608,4096,16384,1220608
-    setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
-    setprop net.tcp.buffersize.gprs    4092,30000,30000,4096,8760,11680
-    setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
-
     # Assign TCP buffer thresholds to be ceiling value of technology maximums
     # Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max  1048576
+    write /proc/sys/net/core/rmem_max  2097152
     write /proc/sys/net/core/wmem_max  2097152
 
 # Services
@@ -661,11 +669,11 @@ on property:ro.boot.emmc=true
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
 
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/usbdisk /storage/usbdisk
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
 
@@ -870,15 +878,15 @@ on property:init.svc.bootanim=stopped
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
     write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1094400
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 998400
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
     write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
     write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 100000
 
     # Configure CPU boost
-    # write /sys/module/cpu_boost/parameters/boost_ms 20
-    write /sys/module/cpu_boost/parameters/sync_threshold 998400
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1094400
+    write /sys/module/cpu_boost/parameters/boost_ms 20
+    write /sys/module/cpu_boost/parameters/sync_threshold 600000
+    write /sys/module/cpu_boost/parameters/input_boost_freq 998400
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
