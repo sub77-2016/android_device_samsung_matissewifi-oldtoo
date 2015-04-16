@@ -15,7 +15,7 @@
 # Inherit from msm8226-common
 -include device/samsung/msm8226-common/BoardConfigCommon.mk
 
-TARGET_OTA_ASSERT_DEVICE := matissewifi
+TARGET_OTA_ASSERT_DEVICE := matissewifi,matissewifixx,matisselte,matisseltexx,matisselteattxx,matisselteusc,matisselteuscxx,matisseltevzw,matisseltevzwxx,matisse3g,matisse3gxx
 
 LOCAL_PATH := device/samsung/matissewifi
 
@@ -36,8 +36,9 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x1e00000
 TARGET_KERNEL_SOURCE := kernel/samsung/s3ve3g
 TARGET_KERNEL_CONFIG := twrp-matissewifi_defconfig
 TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
-TARGET_KERNEL_VARIANT_CONFIG := msm8226-sec_matissewifi_defconfig
-
+TARGET_KERNEL_VARIANT_CONFIG := msm8226-sec_matisse_defconfig
+KERNEL_TOOLCHAIN_PREFIX := arm-linux-gnueabihf-
+KERNEL_TOOLCHAIN := "$(ANDROID_BUILD_TOP)/prebuilt/$(HOST_OS)-x86/toolchain/linaro-4.9-14.06/bin/"
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
@@ -67,8 +68,8 @@ HAVE_SELINUX := true
 #BOARD_HAS_NO_MISC_PARTITION := true
 
 # TWRP
-#TW_THEME := landscape_hdpi
-TW_THEME := portrait_hdpi
+TW_THEME := landscape_hdpi
+#TW_THEME := portrait_hdpi
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 128
 TW_DEFAULT_EXTERNAL_STORAGE := true
