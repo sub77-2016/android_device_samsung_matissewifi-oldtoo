@@ -39,6 +39,9 @@ TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
 TARGET_KERNEL_VARIANT_CONFIG := msm8226-sec_matisse_defconfig
 KERNEL_TOOLCHAIN_PREFIX := arm-linux-gnueabihf-
 KERNEL_TOOLCHAIN := "$(ANDROID_BUILD_TOP)/prebuilt/$(HOST_OS)-x86/toolchain/linaro-4.9-14.06/bin/"
+
+#TARGET_KERNEL_RECOVERY_CONFIG := samsung_p5_recovery_defconfig
+
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
