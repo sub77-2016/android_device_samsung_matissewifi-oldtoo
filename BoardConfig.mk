@@ -61,7 +61,7 @@ TARGET_LIBINIT_DEFINES_FILE := device/samsung/matissewifi/init/init_matissewifi.
 TARGET_UNIFIED_DEVICE := true
 
 # IR
-# TARGET_PROVIDES_CONSUMERIR_HAL := true
+TARGET_PROVIDES_CONSUMERIR_HAL := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
