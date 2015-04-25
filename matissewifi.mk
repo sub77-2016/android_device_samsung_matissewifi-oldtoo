@@ -53,7 +53,7 @@ PRODUCT_COPY_FILES += \
     device/samsung/matissewifi/idc/sec_e-pen.idc:system/usr/idc/sec_e-pen.idc
 
 # IR
-PRODUCT_PACKAGES += consumerir.msm8226
+# PRODUCT_PACKAGES += consumerir.msm8226
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
